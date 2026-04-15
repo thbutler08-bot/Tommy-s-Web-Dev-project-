@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔥 Sauna Trivia Game</title>
+
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #ff7b00, #ffb347);
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #333;
+    }
+
+    .game-container {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        width: 420px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        text-align: center;
+        animation: fadeIn 0.6s ease;
+    }
+
+    h2 {
+        margin-bottom: 10px;
+    }
+
+    #question {
+        font-size: 18px;
+        margin: 20px 0;
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        background: linear-gradient(135deg, #ff7b00, #ff3c00);
+        color: white;
+        transition: 0.2s;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    #result {
+        margin-top: 15px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .score {
+        margin-top: 10px;
+    }
+
+    .progress-bar {
+        height: 8px;
+        background: #eee;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 15px;
+    }
+
+    .progress {
+        height: 100%;
+        background: linear-gradient(90deg, #ff3c00, #ffb347);
+        width: 0%;
+        transition: width 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+</style>
+</head>
+
+<body>
+
+<div class="game-container">
+    <h2>🔥 Sauna Trivia</h2>
+
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <p id="question"></p>
+    <div id="answers"></div>
+    <p id="result"></p>
+    <p class="score">Score: <span id="score">0</span></p>
+</div>
+
+<script>
+const questions = [
+    { question: "Which country is most famous for saunas?", answers: ["Sweden","Finland","Norway","Canada"], correct: 1 },
+    { question: "Typical sauna temperature?", answers: ["50–70°F","70–90°F","150–195°F","250°F+"], correct: 2 },
+    { question: "What creates steam in a sauna?", answers: ["Oil","Water","Salt","Sand"], correct: 1 },
+    { question: "Finnish word for sauna whisk?", answers: ["Vihta","Banya","Onsen","Steamleaf"], correct: 0 },
+    { question: "How long is a typical session?", answers: ["2–5 min","10–20 min","1 hour","2 hours"], correct: 1 },
+    { question: "Saunas are known to improve what?", answers: ["Vision","Circulation","Height","Hearing"], correct: 1 },
+    { question: "What type uses infrared light?", answers: ["Steam sauna","Infrared sauna","Dry sauna","Ice sauna"], correct: 1 },
+    { question: "Traditional sauna material?", answers: ["Plastic","Metal","Wood","Glass"], correct: 2 },
+    { question: "Cold plunge after sauna helps?", answers: ["Digestion","Recovery","Hair growth","Sleepwalking"], correct: 1 },
+    { question: "Banya is from which country?", answers: ["Japan","Russia","Brazil","USA"], correct: 1 },
+    { question: "Saunas mainly heat the body through?", answers: ["Radiation","Conduction","Convection","Microwaves"], correct: 2 },
+    { question: "Most common sauna benefit?", answers: ["Muscle relaxation","Weight gain","Slower heart rate","Lower oxygen"], correct: 0 }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+    const q = questions[currentQuestion];
+    document.getElementById("question").textContent = q.question;
+
+    const answersDiv = document.getElementById("answers");
+    answersDiv.innerHTML = "";
+
+    q.answers.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => checkAnswer(index);
+        answersDiv.appendChild(btn);
+    });
+
+    updateProgress();
+}
+
+function checkAnswer(selected) {
+    const correct = questions[currentQuestion].correct;
+    const result = document.getElementById("result");
+
+    if (selected === correct) {
+        result.textContent = "✅ Correct!";
+        score++;
+        document.getElementById("score").textContent = score;
+    } else {
+        result.textContent = "❌ Wrong!";
+    }
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        setTimeout(() => {
+            result.textContent = "";
+            loadQuestion();
+        }, 800);
+    } else {
+        setTimeout(showFinalScreen, 800);
+    }
+}
+
+function updateProgress() {
+    const progress = document.getElementById("progress");
+    const percent = (currentQuestion / questions.length) * 100;
+    progress.style.width = percent + "%";
+}
+
+function showFinalScreen() {
+    document.querySelector(".game-container").innerHTML = `
+        <h2>🔥 Game Over</h2>
+        <p>Your score: ${score}/${questions.length}</p>
+        <p>${getMessage()}</p>
+        <button onclick="location.reload()">Play Again</button>
+    `;
+}
+
+function getMessage() {
+    if (score === questions.length) return "🔥 Sauna Master!";
+    if (score > questions.length * 0.7) return "💪 Pretty impressive!";
+    if (score > questions.length * 0.4) return "👍 Not bad!";
+    return "😅 Time to hit the sauna again!";
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>

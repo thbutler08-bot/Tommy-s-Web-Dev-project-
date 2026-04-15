@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../../../../IS 201/web dev project/js"
+		},
+		{
+			"path": "../../../../IS 201/web dev project/html"
+		},
+		{
+			"path": "../../../../IS 201/web dev project/css"
+		},
+		{
+			"path": "../../../../IS 201/web dev project/assets"
+		},
+		{
+			"path": "../../../../IS 201/Resume-Nextjs-1.0.0"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "html"
+	}
+}
